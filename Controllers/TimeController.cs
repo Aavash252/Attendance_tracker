@@ -39,8 +39,17 @@ namespace FinalProject.Controllers
         // GET: Times/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = _userManager.GetUserId(User);
-            return View();
+            string userId = _userManager.GetUserId(User);
+            ViewData["UserId"] = userId;
+
+            // Create a new TimeTable object and set its UserId property
+            TimeTable time = new TimeTable
+            {
+                UserId = userId,
+                Date = DateTime.Now.Date
+            };
+
+            return View(time);
         }
 
         
