@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace FinalProject.Controllers
 {
@@ -27,6 +29,7 @@ namespace FinalProject.Controllers
         public string StatusMessage { get; set; }
 
         [HttpGet]
+
         public async Task<IActionResult> Index()
         {
             var finalprojectDbContext = _context.TimeModel.Include(t => t.FinalProjectUser);
@@ -42,54 +45,95 @@ namespace FinalProject.Controllers
             string userId = _userManager.GetUserId(User);
             ViewData["UserId"] = userId;
 
-            // Create a new TimeTable object and set its UserId property
+         
             TimeTable time = new TimeTable
             {
                 UserId = userId,
-                Date = DateTime.Now.Date
+               
             };
+           
+
 
             return View(time);
         }
 
         
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,Date, Clock_In, Clock_Out")] TimeTable time)
         {
-            string userid = _userManager.GetUserId(User);
+           
 
-            ViewData["UserId"] = userid;
+            
 
-            if (ModelState.IsValid)
-            {
-               time.UserId=userid;
 
-                time.Date = DateTime.Now.Date;
+            time.Date= DateTime.Now;
 
-                // Combine date and time components for Clock_In
-                var combinedClockInDateTime = time.Date.Date + time.Clock_In.TimeOfDay;
-                time.Clock_In = combinedClockInDateTime;
-
-                // Combine date and time components for Clock_Out
-                if (time.Clock_Out.HasValue)
-                {
-                    var combinedClockOutDateTime = time.Date.Date + time.Clock_Out.Value.TimeOfDay;
-                    time.Clock_Out = combinedClockOutDateTime;
-                }
-                else
-                {
-                    time.Clock_Out = null;
-                }
-
-                _context.Add(time);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            //ViewData["Id"] = new SelectList(_context.Users, "Id", "Id", time.Id);
-            return View(time);
+            _context.Add(time);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            
+            
         }
-        
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Dashboard()
+        {
+            var finalprojectDbContext = _context.TimeModel.Include(t => t.FinalProjectUser);
+            return View(await finalprojectDbContext.ToListAsync());
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ClockIn()
+        {
+            string userId = _userManager.GetUserId(User);
+
+            TimeTable time = new TimeTable
+            {
+                UserId = userId,
+                Date = DateTime.Now,
+                Clock_In = DateTime.Now,
+                Clock_Out = null
+            };
+
+            _context.Add(time);
+            await _context.SaveChangesAsync();
+
+            StatusMessage = "Clock In successful.";
+
+            return Json(StatusMessage);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ClockOut()
+        {
+            string userId = _userManager.GetUserId(User);
+
+
+            TimeTable clockInRecord = await _context.TimeModel
+                .Where(t => t.UserId == userId && t.Clock_Out == null)
+                 .OrderByDescending(t => t.Clock_In)
+                     .FirstOrDefaultAsync();
+
+            if (clockInRecord != null)
+            {
+                clockInRecord.Clock_Out = DateTime.Now;
+                await _context.SaveChangesAsync();
+
+                StatusMessage = "Clock Out successful.";
+            }
+            else
+            {
+                StatusMessage = "No clock-in record found for the user.";
+            }
+
+            return Json(StatusMessage);
+        }
+
+
 
     }
 }
