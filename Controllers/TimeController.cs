@@ -45,13 +45,20 @@ namespace FinalProject.Controllers
             string userId = _userManager.GetUserId(User);
             ViewData["UserId"] = userId;
 
-         
+
+            bool hasClockInData = _context.TimeModel.Any(t => t.UserId == userId && t.Clock_In != DateTime.MinValue);
+
+            ViewData["HasClockInData"] = hasClockInData;
+
+
+            
             TimeTable time = new TimeTable
             {
                 UserId = userId,
                
             };
-           
+
+            
 
 
             return View(time);
@@ -114,7 +121,7 @@ namespace FinalProject.Controllers
 
 
             TimeTable clockInRecord = await _context.TimeModel
-                .Where(t => t.UserId == userId && t.Clock_Out == null)
+                .Where(t => t.UserId == userId && t.Clock_Out == DateTime.MinValue)
                  .OrderByDescending(t => t.Clock_In)
                      .FirstOrDefaultAsync();
 

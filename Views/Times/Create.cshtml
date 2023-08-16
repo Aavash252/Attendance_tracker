@@ -22,8 +22,14 @@
                 <label asp-for="Clock_In" class="control-label"></label>
                 <div>
                     
-                    <button type="button" id="clockInButton" onclick="clockIn();" style="height:100px;width:100px" >Clock In</button>
-                    <span id="clockInTime"></span>
+                    @if ((bool)ViewData["HasClockInData"])
+                    {
+                         <button type="button" id="clockInButton" disabled style="height:100px;width:100px">Clock In</button>
+                    }
+                    else
+                    {
+                         <a asp-action="ClockIn" class="btn btn-primary" id="clockInButton" onclick="clockIn();">Clock In</a>
+                    }
                 </div>
                 <input id="clockInInput" asp-for="Clock_In" type="hidden" class="form-control" />
                 <span asp-validation-for="Clock_In" class="text-danger"></span>
