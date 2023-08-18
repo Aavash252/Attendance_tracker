@@ -38,6 +38,7 @@ namespace FinalProject.Controllers
 
 
         [HttpGet]
+        [Authorize]
 
         // GET: Times/Create
         public IActionResult Create()
