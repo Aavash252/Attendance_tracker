@@ -46,12 +46,9 @@ namespace FinalProject.Controllers
             ViewData["UserId"] = userId;
 
 
-            bool hasClockInData = _context.TimeModel.Any(t => t.UserId == userId && t.Clock_In != DateTime.MinValue);
-
-            ViewData["HasClockInData"] = hasClockInData;
 
 
-            
+
             TimeTable time = new TimeTable
             {
                 UserId = userId,
@@ -120,10 +117,12 @@ namespace FinalProject.Controllers
             string userId = _userManager.GetUserId(User);
 
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             TimeTable clockInRecord = await _context.TimeModel
-                .Where(t => t.UserId == userId && t.Clock_Out == DateTime.MinValue)
+                .Where(t => t.UserId == userId && t.Clock_Out == null)
                  .OrderByDescending(t => t.Clock_In)
                      .FirstOrDefaultAsync();
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
             if (clockInRecord != null)
             {
@@ -141,6 +140,30 @@ namespace FinalProject.Controllers
         }
 
 
+
+        [HttpGet]
+        public async Task<IActionResult> GetRecentClockIn()
+        {
+            string userId = _userManager.GetUserId(User);
+
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+            TimeTable recentClockIn = await _context.TimeModel
+                .Where(t => t.UserId == userId && t.Clock_Out == null)
+                .OrderByDescending(t => t.Clock_In)
+                .FirstOrDefaultAsync();
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+
+            if (recentClockIn != null)
+            {
+                DateTime clockInTime = recentClockIn.Clock_In;
+
+                return Json(new { success = true, clockInTime = clockInTime.ToString("yyyy-MM-dd HH:mm:ss") });
+            }
+            else
+            {
+                return Json(new { success = false, message = "No recent login found." });
+            }
+        }
 
     }
 }

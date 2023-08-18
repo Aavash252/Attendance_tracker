@@ -4,134 +4,196 @@
     ViewData["Title"] = "Create";
 }
 
+<body style="background-color:powderblue;">
 
-
-<h1>Time</h1>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+<center><h1>Time Sheet</h1></center>
 <hr />
+    <div class="row">
+        <div class="col" style="text-align: right;">
+            <p>Clock-In <span id="clockInTime"></span></p>
+        </div>
+        <div class="col">
+            <center><h2><b><span id="timeElapsed">00:00:00</span></b></h2></center>
+        </div>
+        <div class="col" style="text-align: left;">
+            <p>Clock-Out <span id="clockOutTime"></span></p>
+        </div>
+    </div>
+    
 
+
+
+
+
+
+<div class="container mt-4">
 <div class="row">
-    <div class="col-md-4">
+    
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" readonly />
+                @*<label asp-for="UserId" class="control-label"></label>*@
+                <input asp-for="UserId" class="form-control" readonly type="hidden"/>
+            </div>
+            <div class="col-md-6">
+               
+                    <div class="form-group">
+                
+                        <button type="button" id="clockInButton" onclick="clockIn()" style="height:100px;width:100px">Clock In</button>
+                         
+                         <input id="clockInInput" asp-for="Clock_In" type="hidden" class="form-control" />
+                        <span asp-validation-for="Clock_In" class="text-danger"></span>
+
+
+                
+                    </div>
+                
+            </div>
+            <br />
+            <div class="col-md-6">
+                
+           
+                    <div class="form-group">
+                    
+                
+                        <button type="button" id="clockOutButton" onclick="clockOut()" style="height:100px;width:100px">Clock Out</button>
+                        <span id="clockOutTime"></span>
+                
+                        <input id="clockOutInput" asp-for="Clock_Out" type="hidden" class="form-control" />
+                        <span asp-validation-for="Clock_Out" class="text-danger"></span>
+                    </div>
+                
             </div>
             
-            <div class="form-group">
-                <label asp-for="Clock_In" class="control-label"></label>
-                <div>
-                    
-                    @if ((bool)ViewData["HasClockInData"])
-                    {
-                         <button type="button" id="clockInButton" disabled style="height:100px;width:100px">Clock In</button>
-                    }
-                    else
-                    {
-                         <a asp-action="ClockIn" class="btn btn-primary" id="clockInButton" onclick="clockIn();">Clock In</a>
-                    }
-                </div>
-                <input id="clockInInput" asp-for="Clock_In" type="hidden" class="form-control" />
-                <span asp-validation-for="Clock_In" class="text-danger"></span>
-            </div>
-            <p>Time Elapsed: <span id="timeElapsed">00:00:00</span></p>
-            <div class="form-group">
-                <label asp-for="Clock_Out" class="control-label" ></label>
-                <div>
-                    <button type="button" id="clockOutButton" onclick="clockOut()" style="height:100px;width:100px">Clock Out</button>
-                    <span id="clockOutTime"></span>
-                </div>
-                <input id="clockOutInput" asp-for="Clock_Out" type="hidden" class="form-control" />
-                <span asp-validation-for="Clock_Out" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
         </form>
-    </div>
+    
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
+<br />
 
+</body>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
+
+        $(document).ready(function () {
+
+            $.ajax({
+                url: '/Times/GetRecentClockIn',
+                type: 'GET',
+                success: function (response) {
+                    if (response.success) {
+                        document.getElementById('clockInButton').disabled = true;
+                        var clockInTime = new Date(response.clockInTime);
+                        displayTimeElapsed(clockInTime);
+
+                    } else {
+                        restartTimer();
+                        document.getElementById('clockInButton').disabled = true;
+                    }
+                },
+                error: function () {
+                    alert('Error!');
+                }
+            });
+        });
+
+
+
         var timerInterval;
 
-        function clockIn(){
-            document.getElementById("clockInButton").disabled = true;
+
+
+        function clockIn() {
+            clearInterval(timerInterval);
+            document.getElementById('clockInButton').disabled = true;
+            document.getElementById('clockOutButton').disabled = false;
             localStorage.setItem('clockedIn', 'true');
+
             $.ajax({
                 url: '/Times/ClockIn',
                 type: 'GET',
                 success: function (html) {
                     alert(html);
-                    displayTimeElapsed();
+                    var clockInTime = new Date(html).getTime();
+                    displayTimeElapsed(clockInTime);
                 },
-                error: function (error) {
-                   alert("Error!")
+                error: function () {
+                    alert('Error!');
                 }
             });
-            
         }
-        function displayTimeElapsed() {
-            var startTime = localStorage.getItem('startTime');
-            if (!startTime) {
-                startTime = new Date().getTime();
-                localStorage.setItem('startTime', startTime);
+
+        function displayTimeElapsed(clockInTime) {
+            var startTime = isNaN(clockInTime) ? new Date().getTime() : clockInTime;
+
+            var currentTime = new Date().getTime();
+            var elapsedTime = currentTime - startTime;
+
+            var hours = Math.floor(elapsedTime / (60 * 60 * 1000));
+            var minutes = Math.floor((elapsedTime % (60 * 60 * 1000)) / (60 * 1000));
+            var seconds = Math.floor((elapsedTime % (60 * 1000)) / 1000);
+
+            hours = hours.toString().padStart(2, '0');
+            minutes = minutes.toString().padStart(2, '0');
+            seconds = seconds.toString().padStart(2, '0');
+
+            document.getElementById('timeElapsed').textContent = hours + ':' + minutes + ':' + seconds;
+
+            // Start the interval only if startTime is valid
+            if (!isNaN(startTime)) {
+                timerInterval = setInterval(function () {
+                    currentTime = new Date().getTime();
+                    elapsedTime = currentTime - startTime;
+
+                    hours = Math.floor(elapsedTime / (60 * 60 * 1000));
+                    minutes = Math.floor((elapsedTime % (60 * 60 * 1000)) / (60 * 1000));
+                    seconds = Math.floor((elapsedTime % (60 * 1000)) / 1000);
+
+                    hours = hours.toString().padStart(2, '0');
+                    minutes = minutes.toString().padStart(2, '0');
+                    seconds = seconds.toString().padStart(2, '0');
+
+                    document.getElementById('timeElapsed').textContent = hours + ':' + minutes + ':' + seconds;
+                }, 1000);
             }
 
-            
-            timerInterval = setInterval(function () {
-                var currentTime = new Date().getTime();
-                var elapsedTime = currentTime - startTime;
-
-               
-                var hours = Math.floor(elapsedTime / (60 * 60 * 1000));
-                var minutes = Math.floor((elapsedTime % (60 * 60 * 1000)) / (60 * 1000));
-                var seconds = Math.floor((elapsedTime % (60 * 1000)) / 1000);
-
-               
-                hours = hours.toString().padStart(2, '0');
-                minutes = minutes.toString().padStart(2, '0');
-                seconds = seconds.toString().padStart(2, '0');
-
-                
-                document.getElementById('timeElapsed').textContent = hours + ':' + minutes + ':' + seconds;
-            }, 1000); 
-
-           
             document.getElementById('startButton').disabled = true;
         }
+
+
         function clockOut() {
             clearInterval(timerInterval);
-            if (localStorage.getItem('clockedIn')) {
-                localStorage.removeItem('clockedIn');
-                
-               
+            $.ajax({
+                url: '/Times/ClockOut',
+                type: 'GET',
+                success: function (response) {
+                    document.getElementById("clockOutButton").disabled = true;
+                    document.getElementById('clockInButton').disabled = false;
+                },
+                error: function (error) {
+                    alert("Error!");
+                }
+            });
 
-                $.ajax({
-                    url: '/Times/ClockOut',
-                    type: 'GET',
-                    success: function (response) {
-                        alert(response);
-                        document.getElementById("clockOutButton").disabled = true;
-                        
-                    },
-                    error: function (error) {
-                        alert("Error!");
-                    }
-                });
-            } else {
-                alert("You need to clock in first.");
-            }
         }
-       
-        
+
+        function resetTimer() {
+
+            clearInterval(timerInterval);
+            document.getElementById('clockInButton').disabled = false;
+
+            // Reset the displayed time elapsed to 00:00:00
+            document.getElementById('timeElapsed').textContent = '00:00:00';
+
+        }
+
+
         document.addEventListener("DOMContentLoaded", function () {
             const clockInButton = document.getElementById("clockInButton");
             const clockOutButton = document.getElementById("clockOutButton");
