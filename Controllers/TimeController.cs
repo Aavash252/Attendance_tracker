@@ -81,12 +81,15 @@ namespace FinalProject.Controllers
             
             
         }
-        [HttpGet]
+       
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Dashboard()
+        public ActionResult Dashboard()
         {
-            var finalprojectDbContext = _context.TimeModel.Include(t => t.FinalProjectUser);
-            return View(await finalprojectDbContext.ToListAsync());
+            var timeUserList = _context.TimeModel
+                 .Include(t => t.FinalProjectUser)
+                .ToList();
+
+            return View(timeUserList);
         }
 
 

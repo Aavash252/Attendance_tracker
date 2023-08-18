@@ -9,7 +9,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FinalProjectUser)
+                @Html.DisplayNameFor(model => model.FinalProjectUser.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.FinalProjectUser.Email)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Date)
@@ -28,17 +31,16 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FinalProjectUser.Id)
+                    @Html.DisplayFor(modelItem => item.FinalProjectUser.FirstName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Date)
+                    @Html.DisplayFor(modelItem => item.FinalProjectUser.Email)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Clock_In)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Clock_Out)
-                </td>
+                <td>@item.Date.ToString("dd-MMM-yyyy")</td>
+
+                <td>@item.Clock_In.ToString("dd-MM-yyyy HH:mm")</td>
+
+                <td>@item.Clock_Out?.ToString("dd-MM-yyyy HH:mm")</td>
                 
             </tr>
         }
