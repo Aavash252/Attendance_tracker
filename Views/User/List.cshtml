@@ -1,0 +1,28 @@
+﻿@model IEnumerable<FinalProject.Areas.Identity.Data.FinalProjectUser>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+
+<table>
+    <tr>
+        <th>User Name</th>
+        <th>Email</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("Info", "User", new { userId = user.Id })">@user.UserName</a>
+            </td>
+            <td>@user.Email</td>
+        </tr>
+    }
+</table>
+
+
+
+
+
+
