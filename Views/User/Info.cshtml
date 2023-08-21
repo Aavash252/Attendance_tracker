@@ -6,22 +6,38 @@
 
 <h1>User Details</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>User Name</th>
-            <th>Email</th>
-            <th>Clock In</th>
-            <th>Clock Out</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>@Model.UserName</td>
-            <td>@Model.Email</td>
-          <td>@(ViewBag.TimeRecords.ClockIn)</td>
-            <td>@(ViewBag.TimeRecords.ClockOut) </td>
-     
-        </tr>
-    </tbody>
-</table>
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Clock In</th>
+                <th>Clock Out</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.FirstName</td>
+                <td>@Model.Email</td>
+                <td>
+                    @foreach (var timeRecord in ViewBag.TimeRecords)
+                    {
+                        @timeRecord.Clock_In.ToString("yyyy-MM-dd HH:mm:ss")
+
+                        <br />
+                    }
+                </td>
+                <td>
+                    @foreach (var timeRecord in ViewBag.TimeRecords)
+                    {
+                        @timeRecord.Clock_Out.ToString("yyyy-MM-dd HH:mm:ss")
+
+                        <br />
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

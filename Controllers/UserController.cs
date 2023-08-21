@@ -29,8 +29,8 @@ namespace FinalProject.Controllers
         {
             var user = _context.Users
                 .FirstOrDefault(u => u.Id == userId);
-               
-            
+
+
 
 
             if (user == null)
@@ -46,10 +46,6 @@ namespace FinalProject.Controllers
 
             return View(user);
         }
-
-        
-
-
 
 
 
