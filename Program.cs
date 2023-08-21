@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Areas.Identity.Data;
+using Microsoft.AspNetCore.Mvc.Routing;
+using static System.Formats.Asn1.AsnWriter;
 
 internal class Program
 {
@@ -47,6 +49,8 @@ internal class Program
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
+
+
         app.MapRazorPages();
 
 
@@ -89,10 +93,15 @@ internal class Program
 
 
             }
+            app.MapControllerRoute(
+           name: "admin",
+           pattern: "admin/{controller=User}/{action=Dashboard}/{id?}"); // Adjust route pattern as needed
+
 
 
 
         }
+
 
 
         app.Run();

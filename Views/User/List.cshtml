@@ -5,20 +5,54 @@
 }
 
 <body style="background-color:powderblue;">
+
+    <style>
+        /* Add some styling to the table */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ccc; /* Border style and color */
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd; /* Border between rows */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+
+
+
+
+
+
+
+
+
+
+
+
 <table>
     <tr>
-        <th>User Name</th>
+        <th>Name</th>
         <th>Email</th>
+       
     </tr>
     @foreach (var user in Model)
     {
         <tr>
             <td>
-                <a href="@Url.Action("Info", "User", new { userId = user.Id })">@user.UserName</a>
+                <a href="@Url.Action("Info", "User", new { userId = user.Id })">@user.FirstName</a>
             </td>
             <td>@user.Email</td>
+           
         </tr>
     }
+    
 </table>
 </body>
 

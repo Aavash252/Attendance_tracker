@@ -6,6 +6,7 @@
 <body style="background-color:powderblue;">
 <h1>User Details</h1>
 
+
 @if (Model != null)
 {
     <table class="table">
@@ -25,14 +26,14 @@
                 <td>
                     @foreach (var timeRecord in ViewBag.TimeRecords)
                     {
-                        @timeRecord.Clock_In.ToString("yyyy-MMM-dd HH:mm")
+                        @timeRecord.Clock_In.ToString("dd-MMM-yyyy hh:mm tt")
                         <br />
                     }
                 </td>
                 <td>
                     @foreach (var timeRecord in ViewBag.TimeRecords)
                     {
-                        @timeRecord.Clock_Out.ToString("yyyy-MMM-dd HH:mm")
+                        @timeRecord.Clock_Out.ToString("dd-MMM-yyyy hh:mm tt")
                         <br />
                     }
                 </td>
@@ -41,7 +42,7 @@
                     {
                         var timeDifference = timeRecord.Clock_Out - timeRecord.Clock_In;
 
-                        string formattedTime = string.Format("{0:D2}:{1:D2}",
+                        string formattedTime = string.Format("{0:D2}hr {1:D2}min",
                         (int)timeDifference.TotalHours, timeDifference.Minutes);
 
                         

@@ -22,11 +22,12 @@ namespace FinalProject.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<FinalProjectUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<FinalProjectUser> signInManager, ILogger<LoginModel> logger)
+        private readonly UserManager<FinalProjectUser> _userManager;
+        public LoginModel(SignInManager<FinalProjectUser> signInManager, ILogger<LoginModel> logger, UserManager<FinalProjectUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -115,8 +116,17 @@ namespace FinalProject.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        _logger.LogInformation("Admin user logged in.");
+                        return LocalRedirect("/User/Index"); // Redirect admin to the User/Index page
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Regular user logged in.");
+                        return LocalRedirect(returnUrl); // Redirect regular user to the provided returnUrl
+                    }
                 }
                 if (result.RequiresTwoFactor)
                 {
