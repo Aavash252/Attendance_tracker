@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Info";
 }
-
+<body style="background-color:powderblue;">
 <h1>User Details</h1>
 
 @if (Model != null)
@@ -15,6 +15,7 @@
                 <th>Email</th>
                 <th>Clock In</th>
                 <th>Clock Out</th>
+                <th>Time</th>
             </tr>
         </thead>
         <tbody>
@@ -24,20 +25,34 @@
                 <td>
                     @foreach (var timeRecord in ViewBag.TimeRecords)
                     {
-                        @timeRecord.Clock_In.ToString("yyyy-MM-dd HH:mm:ss")
-
+                        @timeRecord.Clock_In.ToString("yyyy-MMM-dd HH:mm")
                         <br />
                     }
                 </td>
                 <td>
                     @foreach (var timeRecord in ViewBag.TimeRecords)
                     {
-                        @timeRecord.Clock_Out.ToString("yyyy-MM-dd HH:mm:ss")
-
+                        @timeRecord.Clock_Out.ToString("yyyy-MMM-dd HH:mm")
                         <br />
                     }
+                </td>
+                <td>
+                    @foreach (var timeRecord in ViewBag.TimeRecords)
+                    {
+                        var timeDifference = timeRecord.Clock_Out - timeRecord.Clock_In;
+
+                        string formattedTime = string.Format("{0:D2}:{1:D2}",
+                        (int)timeDifference.TotalHours, timeDifference.Minutes);
+
+                        
+
+                        @formattedTime
+                        <br />
+                    }
+
                 </td>
             </tr>
         </tbody>
     </table>
 }
+</body>

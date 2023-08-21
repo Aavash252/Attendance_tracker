@@ -1,4 +1,5 @@
 ﻿using FinalProject.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -15,6 +16,15 @@ namespace FinalProject.Controllers
             _context = context;
             _userManager = userManager;
         }
+
+
+        [Authorize(Roles = "Admin")]
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+        [Authorize(Roles = "Admin")]
         public IActionResult List()
         {
           
