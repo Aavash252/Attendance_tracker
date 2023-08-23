@@ -1,0 +1,49 @@
+﻿@model FinalProject.Areas.Identity.Data.FinalProjectUser
+
+@{
+    ViewData["Title"] = "Graph";
+}
+
+@{
+    
+    var dates = ViewBag.Dates as List<string>;
+    var totalHours = ViewBag.TotalHours as List<double>;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Work Hours Graph</title>
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Work Hours for the Last 30 Days</h1>
+    <canvas id="workHoursChart"></canvas>
+
+    <script>
+        
+        var ctx = document.getElementById('workHoursChart').getContext('2d');
+        var workHoursChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(dates)), 
+                datasets: [{
+                    label: 'Total Hours Worked',
+                    data: @Html.Raw(Json.Serialize(totalHours)), 
+                    backgroundColor: 'rgba(0, 0, 139, 0.2)', 
+                    borderColor: 'rgba(75, 192, 192, 1)', 
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
