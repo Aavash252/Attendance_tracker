@@ -29,16 +29,16 @@ Run migrations:
 
 
 # Usage
--Register an account or log in if you already have one.
--Clock in and out using the provided buttons.
--View your attendance history on the index page.
--Admin users can access the admin dashboard to manage users and records.
+- Register an account or log in if you already have one.
+- Clock in and out using the provided buttons.
+- View your attendance history on the index page.
+- Admin users can access the admin dashboard to manage users and records.
 
 
 
 # Technologies Used
--ASP.NET Core MVC
--Entity Framework Core
--Identity Framework
--HTML, CSS, JavaScript
+- ASP.NET Core MVC
+- Entity Framework Core
+- Identity Framework
+- HTML, CSS, JavaScript
 
