@@ -29,12 +29,25 @@ namespace FinalProject.Controllers
         public string StatusMessage { get; set; }
 
         [HttpGet]
-
         public async Task<IActionResult> Index()
         {
+            string currentUserId = _userManager.GetUserId(User);
+
+            // Check if the user has an active clock-in session (no clock-out time recorded yet)
+            var activeClockInRecord = await _context.TimeModel
+                .Where(t => t.UserId == currentUserId && t.Clock_Out == null)
+                .OrderByDescending(t => t.Clock_In)
+                .FirstOrDefaultAsync();
+
+            if (activeClockInRecord != null)
+            {
+                ViewBag.ActiveClockInTime = activeClockInRecord.Clock_In;
+            }
+
             var finalprojectDbContext = _context.TimeModel.Include(t => t.FinalProjectUser);
             return View(await finalprojectDbContext.ToListAsync());
         }
+
 
 
         [HttpGet]

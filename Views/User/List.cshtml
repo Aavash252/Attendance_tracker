@@ -24,22 +24,11 @@
             background-color: #f2f2f2;
         }
     </style>
-
-
-
-
-
-
-
-
-
-
-
-
 <table>
     <tr>
         <th>Name</th>
         <th>Email</th>
+        <th>Info</th>
        
     </tr>
     @foreach (var user in Model)
@@ -49,7 +38,7 @@
                 <a href="@Url.Action("Graph", "User", new { userId = user.Id })">@user.FirstName</a>
             </td>
             <td>@user.Email</td>
-           
+                <td><a href="@Url.Action("Info", "User", new { userId = user.Id })">Info</a></td>
         </tr>
     }
     

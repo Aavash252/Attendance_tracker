@@ -9,11 +9,14 @@
 
 @if (Model != null)
 {
+        <h1>@Model.FirstName @Model.LastName</h1>
+        
+        <right><h1>@Model.Email</h1></right>
+       
     <table class="table">
         <thead>
             <tr>
-                <th>User Name</th>
-                <th>Email</th>
+               
                 <th>Clock In</th>
                 <th>Clock Out</th>
                 <th>Time</th>
@@ -21,8 +24,6 @@
         </thead>
         <tbody>
             <tr>
-                <td>@Model.FirstName</td>
-                <td>@Model.Email</td>
                 <td>
                     @foreach (var timeRecord in ViewBag.TimeRecords)
                     {

@@ -4,11 +4,24 @@
     ViewData["Title"] = "Index";
 }
 <body style="background-color:powderblue;">
-<h1>Index</h1>
 
+<center><h1>Welcome to Attendance tracker</h1></center>
 <p>
-    <a asp-action="Create">Create New</a>
-    <a asp-action="Dashboard">Look Dashboard</a>
+       
+    
+        @if (ViewBag.ActiveClockInTime != null)
+        {
+        
+        <h3><p>On  @ViewBag.ActiveClockInTime.ToString("yyyy-MMM-dd")</p></h3>
+        <p>Your active clock-in time is: @ViewBag.ActiveClockInTime.ToString("hh:mm:ss tt")</p>
+        }
 
 </p>
+
+<br />
+<br />
+ <h4>Go to <a asp-action="Create">Clock</a> </h4>
+
+
 </body>
+

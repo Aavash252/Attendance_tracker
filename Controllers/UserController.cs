@@ -51,25 +51,25 @@ namespace FinalProject.Controllers
                 .ToList();
 
             var groupedRecords = timeRecords
-                .GroupBy(t => (t.Date - thirtyDaysAgo).Days + 1) // Calculate day number within the 30-day period
+                .GroupBy(t => (t.Date - thirtyDaysAgo).Days + 1) 
                 .Select(group => new
                 {
                     Day = group.Key,
-                    Date = thirtyDaysAgo.AddDays(group.Key - 1) // Calculate the actual date
-                        .ToString("yyyy-MM-dd"), // Format the date as yyyy-MM-dd
+                    Date = thirtyDaysAgo.AddDays(group.Key - 1)
+                        .ToString("yyyy-MM-dd"), 
                     TotalHours = group.Sum(record => (record.Clock_Out - record.Clock_In)?.TotalHours ?? 0)
                 })
                 .ToList();
 
-            // Extract date and total hours data into separate lists
+           
             List<string> dates = groupedRecords.Select(record => record.Date).ToList();
             List<double> totalHours = groupedRecords.Select(record => record.TotalHours).ToList();
 
-            // Pass the lists to the view
+           
             ViewBag.Dates = dates;
             ViewBag.TotalHours = totalHours;
 
-            // Assuming you have a view named "Graph" in your Views folder
+           
             return View("Graph");
         }
 
