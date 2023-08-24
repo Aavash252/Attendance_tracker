@@ -73,6 +73,19 @@
 </div>
 </div>
 <br />
+    <div class="modal fade" id="clockInModal" tabindex="-1" aria-labelledby="clockInModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="clockInModalLabel">Clock-in Successful</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You have successfully clocked in.
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 @section Scripts {
@@ -114,12 +127,12 @@
             document.getElementById('clockInButton').disabled = true;
             document.getElementById('clockOutButton').disabled = false;
             localStorage.setItem('clockedIn', 'true');
-
+            document.getElementById('clockOutTime').textContent = '';
             $.ajax({
                 url: '/Times/ClockIn',
                 type: 'GET',
                 success: function (html) {
-                    alert(html);
+                    $('#clockInModal').modal('show');
                     var clockInTime = new Date(html).getTime();
                     displayTimeElapsed(clockInTime);
                 },

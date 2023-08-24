@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<FinalProject.Areas.Identity.Data.FinalProjectUser>
 @{
     ViewData["Title"] = "Index";
 }
@@ -6,16 +6,13 @@
 <body style="background-color:powderblue;">
 
 
-    <center><h1>Welcome to Admin Page</h1></center>
-<h2>Actions</h2>
+    <center><h1>Welcome Admin</h1></center>
 
-<ul>
-        <li> <a asp-action="List" style="color: black;"> View User List</a></li>
-        <li> <a href="/Times/Dashboard" style="color: black;"> Dashboard</a></li>
-</ul>
-   
-
-   
-    
+        <h2>Actions</h2>
+        <ul>
+            <li><a asp-action="List" style="color: black;">View User List</a></li>
+            <li><a href="/Times/Dashboard" style="color: black;">Dashboard</a></li>
+        </ul>
+  
 
 </body>
