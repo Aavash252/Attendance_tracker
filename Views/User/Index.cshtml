@@ -3,16 +3,71 @@
     ViewData["Title"] = "Index";
 }
 
+<center><h1>Welcome Admin</h1></center>
+<style>
+    /* styles.css */
+   
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    .box {
+        width: 500px;
+        height: 400px;
+        background-color:orange;
+        transition: transform 0.3s, width 0.3s, height 0.3s, margin 0.3s;
+        margin: 10px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center; 
+    }
+
+
+    .box:hover {
+            transform: scale(1.1);
+            width: 600px;
+            height: 500px;
+            margin: 0; 
+    }
+
+        .box a {
+            text-decoration: none; /* Remove underline from links inside boxes */
+        }
+
+</style>
+
+
 <body style="background-color:powderblue;">
+    
 
 
-    <center><h1>Welcome Admin</h1></center>
 
-        <h2>Actions</h2>
-        <ul>
-            <li><a asp-action="List" style="color: black;">View User List</a></li>
-            <li><a href="/Times/Dashboard" style="color: black;">Dashboard</a></li>
-        </ul>
+    <div class="container">
+        <a asp-action="List" style="color: white;" class="box">
+            <div>
+                <h2>View User List</h2>
+            </div>
+        </a>
+        
+        <a href="/Times/Dashboard" style="color: white;" class="box">
+            <div>
+                <h2>Dashboard</h2>
+            </div>
+        </a>
+
+        <a asp-action="Weekly" style="color:white;" class="box">
+            <div>
+                <h2>Weekly Insight</h2>
+            </div>
+        </a>
+        
+        
+        
+    </div>
+    
   
-
 </body>

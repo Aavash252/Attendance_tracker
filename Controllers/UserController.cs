@@ -1,9 +1,17 @@
 ﻿using FinalProject.Areas.Identity.Data;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Net.Mime.MediaTypeNames;
+using System.Buffers.Text;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace FinalProject.Controllers
 {
@@ -78,42 +86,59 @@ namespace FinalProject.Controllers
             return View("Graph");
         }
 
-
-
-
-
-
-
-
-        public IActionResult Info(string userId)
+        public IActionResult Weekly()
         {
-            var user = _context.Users
-                .FirstOrDefault(u => u.Id == userId);
+            var users = _userManager.Users.ToList();
 
+            DateTime weeklyData = DateTime.UtcNow.AddDays(-7);
 
+            List<string> name = new List<string>();
+            List<double> totalHours = new List<double>();
 
-
-            if (user == null)
+            foreach (var user in users)
             {
-                return NotFound();
+                var timeRecords = _context.TimeModel
+                    .Where(t => t.UserId == user.Id && t.Date >= weeklyData)
+                    .ToList();
+
+                var totalWorkedHours = timeRecords
+                    .Sum(record => (record.Clock_Out - record.Clock_In)?.TotalHours ?? 0);
+
+                name.Add(user.FirstName);
+                totalHours.Add(totalWorkedHours);
             }
 
-            var timeRecords = _context.TimeModel
-                .Where(t => t.UserId == userId)
-                .ToList();
+            ViewBag.Name = name;
+            ViewBag.TotalHours = totalHours;
 
-            ViewBag.TimeRecords = timeRecords;
-
-            return View(user);
+            return View("Weekly");
         }
 
 
 
 
 
+
+
+
+
+
+         
+        public IActionResult Info(string userId)
+        {
+            var user = _context.Users
+            .FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var timeRecords = _context.TimeModel
+            .Where(t => t.UserId == userId)
+            .ToList();
+            ViewBag.TimeRecords = timeRecords;
+            return View(user);
+        }
     }
-
-
 }
 
 

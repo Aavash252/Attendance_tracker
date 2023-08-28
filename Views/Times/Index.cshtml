@@ -15,17 +15,26 @@
         
         <h3>On  @ViewBag.ActiveClockInTime.ToString("yyyy-MMM-dd")</h3>
         <p>Your active clock-in time is: @ViewBag.ActiveClockInTime.ToString("hh:mm:ss tt")
-        </p>
+            </p>
+        }
+        else
+        {
+            <h2>You haven't Clocked In. </h2>
         }
 
 
 
 <br />
 <br />
- <h4>Go to <a asp-action="Create">Clock</a> </h4>
+<ul>
+        <li><h4>Go to <a asp-action="Create">Clock</a> </h4></li>
+        <li><h4><a href="@Url.Action("Graph", "Times", new { userId = ViewBag.CurrentUserId })" class="nav-link "> View Analytics</a></h4></li>
+
+        
+</ul>
+ 
 
 
-<h4><a href="@Url.Action("Graph", "Times", new { userId = ViewBag.CurrentUserId })" class="nav-link ">View Analytics</a></h4>
 
 
 
