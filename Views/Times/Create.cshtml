@@ -4,11 +4,32 @@
     ViewData["Title"] = "Create";
 }
 
-<body style="background-color:powderblue;">
+<body style="background-color:white;">
 
     <div>
         <a asp-action="Index">Back to List</a>
+       
     </div>
+    <style>
+        .align-right {
+            text-align: right;
+        }
+
+        .position-right {
+            position: absolute;
+            right: 10%;
+            top:10%;
+            
+        }
+        
+    </style>
+
+    <div class="align-right">
+        
+       
+        <a href="@Url.Action("Graph", "Times", new { userId = ViewBag.CurrentUserId })" class="nav-link position-right">View Analytics</a>
+    </div>
+
 <center><h1>Time Sheet</h1></center>
 <hr />
     <div class="row">
@@ -86,6 +107,7 @@
             </div>
         </div>
     </div>
+
 
 </body>
 @section Scripts {

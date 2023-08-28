@@ -93,3 +93,11 @@ body {
     background-color: rgba(255, 255, 255, 0.8); /* Set a background color for the caption */
     padding: 10px; /* Add some padding for better appearance */
 }
+.align-left {
+    text-align: left;
+}
+
+.small-footer {
+    font-size: 12px;
+    padding: 5px;
+}

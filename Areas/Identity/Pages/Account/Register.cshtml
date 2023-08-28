@@ -6,10 +6,12 @@
 }
 
 
-<center><h1>@ViewData["Title"]</h1></center>
+
+<center><img src="~/css/add.png" alt="Logo" width="70" height="75"></center>
 
 <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-    <center><h2>Create a new account.</h2></center>
+    
+    <center><h2>Sign Up</h2></center>
     <hr />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
@@ -55,6 +57,10 @@
         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
     </div>
     <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+    <div class="text-center mt-3">
+        <a href="/Identity/Account/Login" class="btn btn-link">Login</a>
+    </div>
+   
 </form>
 
 

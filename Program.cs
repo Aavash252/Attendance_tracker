@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using FinalProject.Areas.Identity.Data;
 using Microsoft.AspNetCore.Mvc.Routing;
 using static System.Formats.Asn1.AsnWriter;
+using Microsoft.AspNetCore.Authorization;
 
 internal class Program
 {
@@ -24,8 +25,7 @@ internal class Program
             .AddEntityFrameworkStores<FinalProjectDbContext>();
 
 
-        // Add services to the container.
-        
+       
 
 
         builder.Services.AddRazorPages();
@@ -46,7 +46,8 @@ internal class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=Home}/{action=Index}/{id?}")
+            .RequireAuthorization(); ;
 
 
 
@@ -78,6 +79,7 @@ internal class Program
             string email = "admin@admin.com";
             string password = "Imatesp@3";
             
+            
 
 
             if (await userManager.FindByEmailAsync(email) == null)
@@ -95,7 +97,7 @@ internal class Program
             }
             app.MapControllerRoute(
            name: "admin",
-           pattern: "admin/{controller=User}/{action=Dashboard}/{id?}"); // Adjust route pattern as needed
+           pattern: "admin/{controller=Home}/{action=Index}/{id?}"); // Adjust route pattern as needed
 
 
 

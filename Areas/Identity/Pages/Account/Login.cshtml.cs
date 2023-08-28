@@ -120,7 +120,7 @@ namespace FinalProject.Areas.Identity.Pages.Account
                     if (await _userManager.IsInRoleAsync(user, "Admin"))
                     {
                         _logger.LogInformation("Admin user logged in.");
-                        return LocalRedirect("/User/Index"); // Redirect admin to the User/Index page
+                        return LocalRedirect("/Home/Index"); // Redirect admin to the User/Index page
                     }
                     else
                     {

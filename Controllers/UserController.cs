@@ -69,7 +69,7 @@ namespace FinalProject.Controllers
                 {
                     Day = group.Key,
                     Date = thirtyDaysAgo.AddDays(group.Key - 1)
-                        .ToString("yyyy-MM-dd"), 
+                        .ToString("yyyy-MMM-dd"), 
                     TotalHours = group.Sum(record => (record.Clock_Out - record.Clock_In)?.TotalHours ?? 0)
                 })
                 .ToList();
