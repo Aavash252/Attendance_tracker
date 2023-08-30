@@ -4,6 +4,7 @@ using FinalProject.Areas.Identity.Data;
 using Microsoft.AspNetCore.Mvc.Routing;
 using static System.Formats.Asn1.AsnWriter;
 using Microsoft.AspNetCore.Authorization;
+using FinalProject.Migrations;
 
 internal class Program
 {
@@ -78,7 +79,7 @@ internal class Program
 
             string email = "admin@admin.com";
             string password = "Imatesp@3";
-            
+            string name = "Admin";
             
 
 
@@ -87,6 +88,7 @@ internal class Program
                 var user = new FinalProjectUser();
                 user.Email = email;
                 user.UserName = email;
+                user.FirstName = name ;
 
 
                 await userManager.CreateAsync(user, password);

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<FinalProject.Areas.Identity.Data.FinalProjectUser>
+
+@{
+    ViewData["Title"] = "Profile";
+
+
+}
+
+
+<style>
+    /* Your existing styles */
+
+    .profile-photo-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    
+
+    .info-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .info-label {
+        font-weight: bold;
+        margin-right: 30px;
+        min-width: 120px;
+    }
+
+    .form-input {
+        flex:0.9;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+</style>
+
+<div class="form-containers">
+    @foreach(var user in Model)
+    {
+        <div class="profile-photo-container">
+            @if (@user.Photo != null)
+            {
+                <img src="data:image/*;base64,@(Convert.ToBase64String(user.Photo))"  style="width: 200px; height: 200px; object-fit: cover; border-radius: 200px" alt="Profile Photo" class="profile-photo" />
+            }
+        </div>
+        <br />
+        <div class="info-group">
+            <span class="info-label">Name:</span>
+            <span class="form-input">@user.FirstName @user.LastName</span>
+        </div>
+
+        <div class="info-group">
+            <span class="info-label">Phone Number:</span>
+            <span class="form-input">@user.PhoneNumber</span>
+        </div>
+
+        <div class="info-group">
+            <span class="info-label">Date of Birth:</span>
+            @if (user.DOB != null)
+            {
+                <span class="form-input">@user.DOB.Value.ToString("dd-MMM-yyyy")</span>
+            }
+            else
+            {
+                <span class="form-input">N/A</span>
+            }
+        </div>
+
+        <div class="info-group">
+            <span class="info-label">Email:</span>
+            <span class="form-input">@user.Email</span>
+        </div>
+    }
+
+    <form asp-action="Profile" asp-controller="Times" method="post" enctype="multipart/form-data">
+        @foreach (var user in Model)
+        {
+            <input type="hidden" name="userId" value="@user.Id" />
+        }
+        <div class="form-group">
+            <input type="file" class="form-control-file" id="photo" name="photo">
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>

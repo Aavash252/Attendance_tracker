@@ -181,7 +181,7 @@ namespace FinalProject.Controllers
                     Day = group.Key,
                     Date = thirtyDaysAgo.AddDays(group.Key - 1)
                         .ToString("yyyy-MMM-dd"),
-                    TotalHours = group.Sum(record => (record.Clock_Out - record.Clock_In)?.TotalHours ?? 0)
+                    TotalHours = Math.Min(24, group.Sum(record => (record.Clock_Out - record.Clock_In)?.TotalHours ?? 0))
                 })
                 .ToList();
 
@@ -197,7 +197,37 @@ namespace FinalProject.Controllers
             return View("Graph");
         }
 
+        public IActionResult Profile(string userId, IFormFile photo)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
 
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            
+            if (photo != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    user.Photo = memoryStream.ToArray();
+
+                    _context.SaveChanges();
+                }
+            }
+
+            var details = _context.Users.Where(u => u.Id == userId).ToList();
+
+            return View(details);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostPhoto()
+        {
+
+        }
 
 
 

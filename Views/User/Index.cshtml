@@ -4,34 +4,37 @@
 }
 
 <center><h1>Welcome Admin</h1></center>
+<br />
+<br />
 <style>
   
    
 
-    .container {
+    .containers {
         display: flex;
         justify-content: space-between;
         padding: 20px;
     }
 
     .box {
-        width: 400px;
-        height: 300px;
+        width: 200px;
+        height: 200px;
         background-color:white;
         transition: transform 0.3s, width 0.3s, height 0.3s, margin 0.3s;
-        margin: 10px; 
+        margin: 0px; 
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center; 
         border: none;
+        
     }
 
 
     .box:hover {
-            transform: scale(0.9);
-            width: 450px;
-            height: 400px;
+            transform: scale(1.1);
+            width: 250px;
+            height: 200px;
             margin: 0; 
     }
 
@@ -41,36 +44,34 @@
 
 
 <body style="background-color:white;">
-    
-
-
-    <br />
     <div class="container">
-        <a asp-action="List" style="color:black;text-decoration: none;" class="box">
-            <div>
-                
-                <img src="~/css/people.png"  width="200" height="200">
-                <h2>View User List</h2>
+        
+        <div class="row">
+            <div class="col-lg-4 col-sm-12">
+                <a asp-action="List" class="box" style="color:black;text-decoration: none;">
+                    <div>
+                        <img src="~/css/people.png" width="200" height="200" class="img-fluid" />
+                        <h2>View User List</h2>
+                    </div>
+                </a>
             </div>
-        </a>
-        
-        <a href="/Times/Dashboard" style="color:black;text-decoration: none;" class="box">
-            <div>
-                <img src="~/css/data.png" width="200" height="200">
-                <h2>Dashboard</h2>
+            <div class="col-lg-4 col-sm-12">
+                <a href="/Times/Dashboard" class="box" style="color:black;text-decoration: none;">
+                    <div>
+                        <img src="~/css/data.png" width="200" height="200" class="img-fluid" />
+                        <h2>Dashboard</h2>
+                    </div>
+                </a>
             </div>
-        </a>
-
-        <a asp-action="Weekly" style="color:black;text-decoration: none;" class="box">
-            <div>
-                <img src="~/css/analysis.png" width="200" height="200">
-                <h2>Weekly Insight</h2>
+            <div class="col-lg-4 col-sm-12">
+                <a asp-action="Weekly" class="box" style="color:black;text-decoration: none;">
+                    <div>
+                        <img src="~/css/analysis.png" width="200" height="200" class="img-fluid" />
+                        <h2>Weekly Insight</h2>
+                    </div>
+                </a>
             </div>
-        </a>
-        
-        
-        
+        </div>
     </div>
-    
-  
 </body>
+</html>

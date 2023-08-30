@@ -11,6 +11,8 @@
     <h5>Get on-the-go time tracking, tools to help you manage projects and people </h5>
 
 </center>
+<br />
+<br />
 <body style="background-color:white;">
 
     
@@ -22,12 +24,13 @@
             display: flex;
             justify-content: space-between;
             padding: 20px;
+           
           
         }
 
         .box {
-            width: 400px;
-            height: 300px;
+            width: 200px;
+            height: 200px;
             background-color:white;
             transition: transform 0.3s, width 0.3s, height 0.3s, margin 0.3s;
             margin: 20px;
@@ -41,8 +44,8 @@
 
        .box:hover {
           transform: scale(1.1);
-                width: 450px;
-                height: 400px;
+                width: 250px;
+                height: 200px;
                 margin: 0;
        }
 
@@ -57,55 +60,48 @@
 
 
     </style>
-    @if(User.Identity.IsAuthenticated){
-    <div class="containers">
-            <a asp-area="" asp-controller="Times" asp-action="Create" style="color:black;text-decoration: none;" class="box">
-            <div>
-
-                <img src="~/css/board.png" width="200" height="200">
-                <h2>Go to Clock</h2>
-            </div>
-        </a>
-            <a href="@Url.Action("Graph", "Times", new { userId = ViewBag.CurrentUserId })" class="box" style="color:black;text-decoration: none;">
-                <div>
-                    <img src="~/css/analytics.png" width="200" height="200">
-                    <h2 style="color:black;">View Analytics</h2>
-                </div>
-            </a>
-            <a href="/Identity/Account/Manage" class="box" style="color:black;text-decoration: none;">
-                <div>
-                    <img src="~/css/people.png" width="200" height="200">
-                    <h2 >User Detail</h2>
-                </div>
-        </a>
-        
-        
-        @if (User.IsInRole("Admin"))
-        {
-                <a asp-area="" asp-controller="User" asp-action="Index" class="box" style="color:black;text-decoration: none;">
-                    <div>
-                        <img src="~/css/admin.png" width="200" height="200">
-                        <h2 >Admin</h2>
-                    </div>
-                </a>
-        }
-
-
-           
-
-    </div>
-    }
-    else
+    @if (User.Identity.IsAuthenticated)
     {
-        
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-12">
+                    <a asp-area="" asp-controller="Times" asp-action="Create" class="box" style="color:black;text-decoration: none;">
+                        <div>
+                            <img src="~/css/board.png" width="200" height="200" class="img-fluid" />
+                            <h2>Go to Clock</h2>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-sm-12">
+                    <a href="@Url.Action("Graph", "Times", new { userId = ViewBag.CurrentUserId })" class="box" style="color:black;text-decoration: none;">
+                        <div>
+                            <img src="~/css/analytics.png" width="200" height="200" class="img-fluid" />
+                            <h2 style="color:black;">View Analytics</h2>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-sm-12">
+                    <a href="@Url.Action("Profile", "Times", new { userId = ViewBag.CurrentUserId })" class="box" style="color:black;text-decoration: none;">
+                        <div>
+                            <img src="~/css/people.png" width="200" height="200" class="img-fluid" />
+                            <h2>User Detail</h2>
+                        </div>
+                    </a>
+                </div>
 
-
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="col-lg-3 col-sm-12">
+                        <a asp-area="" asp-controller="User" asp-action="Index" class="box" style="color:black;text-decoration: none;">
+                            <div>
+                                <img src="~/css/admin.png" width="200" height="200" class="img-fluid" />
+                                <h2>Admin</h2>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+       
     }
-
-
-           
-            
-        
-
-
 </body>

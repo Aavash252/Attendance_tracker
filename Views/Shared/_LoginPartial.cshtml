@@ -5,24 +5,69 @@
 @inject UserManager<FinalProjectUser> UserManager
 
 
-<ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-        var currentUser = await UserManager.GetUserAsync(User);
+<head>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
 
-    <li class="nav-item">
-       @if (currentUser != null)
-        {
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                Hello,  @Html.DisplayFor(model => currentUser.FirstName) @Html.DisplayFor(model => currentUser.LastName)!
-            </a>
+    <div class="dropdown">
+        <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <span class="d-inline-block align-middle">
+                    Hi, @UserManager.GetUserAsync(User).Result.FirstName
+                    @if (UserManager.GetUserAsync(User).Result.Photo != null)
+                    {
+                        <img style="width: 40px; height: 40px; object-fit: cover; border-radius: 30px;" src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.Photo))">
+                    }
+                </span>
             }
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
-}
+        </div>
 
-</ul>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var currentUser = await UserManager.GetUserAsync(User);
+
+                    
+                        @if (currentUser != null)
+                        {
+                            <a  class="dropdown-item" href="@Url.Action("Profile", "Times", new { userId = ViewBag.CurrentUserId })" style="color:black;text-decoration: none;">
+                               Profile
+                            </a>
+                      
+                            <a  class="dropdown-item" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                             Logout
+                            </a>
+                    
+                  
+                        }
+                }
+           
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
