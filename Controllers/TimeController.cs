@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace FinalProject.Controllers
 {
@@ -197,9 +198,10 @@ namespace FinalProject.Controllers
             return View("Graph");
         }
 
-        public IActionResult Profile(string userId, IFormFile photo)
+        public IActionResult Profile( IFormFile photo)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            string userId = _userManager.GetUserId(User);
+            var user = _context.Users.Where(u => u.Id == userId).ToList();
 
             if (user == null)
             {
@@ -207,27 +209,38 @@ namespace FinalProject.Controllers
             }
 
             
+            return View(user);
+
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> PostPhoto(IFormFile photo)
+        {
+            string userId = _userManager.GetUserId(User);
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             if (photo != null)
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                    photo.CopyTo(memoryStream);
+                    await photo.CopyToAsync(memoryStream);
                     user.Photo = memoryStream.ToArray();
 
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                 }
             }
 
-            var details = _context.Users.Where(u => u.Id == userId).ToList();
-
-            return View(details);
+            return RedirectToAction(nameof(Profile));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostPhoto()
-        {
-
-        }
 
 
 

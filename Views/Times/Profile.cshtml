@@ -76,7 +76,7 @@
         </div>
     }
 
-    <form asp-action="Profile" asp-controller="Times" method="post" enctype="multipart/form-data">
+    <form asp-action="PostPhoto" asp-controller="Times" method="post" enctype="multipart/form-data">
         @foreach (var user in Model)
         {
             <input type="hidden" name="userId" value="@user.Id" />
