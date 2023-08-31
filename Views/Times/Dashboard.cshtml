@@ -4,6 +4,12 @@
     ViewData["Title"] = "Dashboard";
 }
 
+<style>
+    .pagination a {
+        margin-right: 5px; 
+        margin-left:5px;
+    }
+</style>
 <body style="background-color:white;">
 <table class="table">
     <thead>
@@ -46,4 +52,22 @@
         }
     </tbody>
 </table>
+    @if (ViewBag.TotalPages > 1)
+    {
+        <div class="pagination">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                if (i == ViewBag.CurrentPage)
+                {
+                    <span> @i </span>
+                }
+                else
+                {
+                    <a href="@Url.Action("Dashboard", new { page = i, pageSize = ViewBag.PageSize })">@i </a>
+                }
+                
+            }
+        </div>
+    }
+
 </body>

@@ -72,10 +72,10 @@ namespace FinalProject.Controllers
                
             };
 
+            return View(time);
             
 
 
-            return View(time);
         }
 
         
@@ -84,10 +84,6 @@ namespace FinalProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,Date, Clock_In, Clock_Out")] TimeTable time)
         {
-           
-
-            
-
 
             time.Date= DateTime.Now;
 
@@ -95,18 +91,40 @@ namespace FinalProject.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
             
-            
         }
-       
+           
+
+            
+
+            
+
         [Authorize(Roles = "Admin")]
-        public ActionResult Dashboard()
+        public ActionResult Dashboard(int page = 1, int pageSize =9)
         {
+            var totalCount = _context.TimeModel.Count();
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
             var timeUserList = _context.TimeModel
-                 .Include(t => t.FinalProjectUser)
+                .Include(t => t.FinalProjectUser)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToList();
+
+            ViewBag.TotalPages = totalPages;
+            ViewBag.CurrentPage = page;
 
             return View(timeUserList);
         }
+
+
+
+
+
+
+
+
+
+
 
 
         [HttpGet]
@@ -198,7 +216,7 @@ namespace FinalProject.Controllers
             return View("Graph");
         }
 
-        public IActionResult Profile( IFormFile photo)
+        public IActionResult Profile()
         {
             string userId = _userManager.GetUserId(User);
             var user = _context.Users.Where(u => u.Id == userId).ToList();
@@ -212,7 +230,31 @@ namespace FinalProject.Controllers
             return View(user);
 
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateProfile(FinalProjectUser updatedUser)
+        {
+            if (ModelState.IsValid)
+            {
+                string userId = _userManager.GetUserId(User);
 
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+               
+                if (user != null)
+                {
+                    user.FirstName = updatedUser.FirstName;
+                    user.LastName = updatedUser.LastName;
+                    user.DOB = updatedUser.DOB;
+                    user.PhoneNumber = updatedUser.PhoneNumber;
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+            
+
+
+            return RedirectToAction(nameof(Profile));
+        }
 
 
         [HttpPost]

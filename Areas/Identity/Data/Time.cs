@@ -11,6 +11,8 @@ namespace FinalProject.Areas.Identity.Data;
 // Add profile data for application users by adding properties to the TrackerUser class
 public class TimeTable
 {
+    internal static object count;
+
     [Key]
     public int Id { get; set; }
 

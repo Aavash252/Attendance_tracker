@@ -1,4 +1,4 @@
-﻿﻿@model IEnumerable<FinalProject.Areas.Identity.Data.FinalProjectUser>
+﻿@model IEnumerable<FinalProject.Areas.Identity.Data.FinalProjectUser>
 
 @{
     ViewData["Title"] = "Profile";
@@ -16,7 +16,7 @@
         align-items: center;
     }
 
-    
+
 
     .info-group {
         display: flex;
@@ -31,49 +31,57 @@
     }
 
     .form-input {
-        flex:0.9;
+        flex: 0.9;
         padding: 8px;
         border: 1px solid #ccc;
         border-radius: 3px;
     }
 </style>
 
-<div class="form-containers">
-    @foreach(var user in Model)
+<div class="containers" >
+    @foreach (var user in Model)
     {
         <div class="profile-photo-container">
             @if (@user.Photo != null)
             {
-                <img src="data:image/*;base64,@(Convert.ToBase64String(user.Photo))"  style="width: 200px; height: 200px; object-fit: cover; border-radius: 200px" alt="Profile Photo" class="profile-photo" />
+                <img src="data:image/*;base64,@(Convert.ToBase64String(user.Photo))" style="width: 200px; height: 200px; object-fit: cover; border-radius: 200px" alt="Profile Photo" class="profile-photo" />
             }
         </div>
         <br />
-        <div class="info-group">
-            <span class="info-label">Name:</span>
-            <span class="form-input">@user.FirstName @user.LastName</span>
-        </div>
+        <form asp-action="UpdateProfile" asp-controller="Times" method="post" >
 
-        <div class="info-group">
-            <span class="info-label">Phone Number:</span>
-            <span class="form-input">@user.PhoneNumber</span>
-        </div>
+            <div class="info-group">
+                <span class="info-label">Name:</span>
+                <input type="text" class="form-control" id="FirstName" name="FirstName" value="@user.FirstName" />
+                <input type="text" class="form-control" id="LastName" name="LastName" value="@user.LastName" />
+            </div>
 
-        <div class="info-group">
-            <span class="info-label">Date of Birth:</span>
-            @if (user.DOB != null)
-            {
-                <span class="form-input">@user.DOB.Value.ToString("dd-MMM-yyyy")</span>
-            }
-            else
-            {
-                <span class="form-input">N/A</span>
-            }
-        </div>
+            <div class="info-group">
+                <span class="info-label">Phone Number:</span>
+                <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@user.PhoneNumber" />
+            </div>
 
-        <div class="info-group">
-            <span class="info-label">Email:</span>
-            <span class="form-input">@user.Email</span>
-        </div>
+            <div class="info-group">
+                <span class="info-label">Date of Birth:</span>
+                @if (user.DOB != null)
+                {
+                    <input type="text" class="form-control" id="DOB" name="DOB" value="@user.DOB.Value.ToString("yyyy-MMM-dd" )" />
+                }
+                else
+                {
+                    <input type="text" class="form-control" id="DOB" name="DOB"  />
+                }
+                
+                
+            </div>
+
+            <div class="info-group">
+                <span class="info-label">Email:</span>
+                <input type="text" class="form-control" id="Email" name="Email" value="@user.Email" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
     }
 
     <form asp-action="PostPhoto" asp-controller="Times" method="post" enctype="multipart/form-data">
