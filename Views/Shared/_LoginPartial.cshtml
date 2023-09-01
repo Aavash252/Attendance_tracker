@@ -35,11 +35,11 @@
                         @if (currentUser != null)
                         {
                             <a  class="dropdown-item" href="@Url.Action("Profile", "Times", new { userId = ViewBag.CurrentUserId })" style="color:black;text-decoration: none;">
-                               Profile
+                             Profile
                             </a>
-                      
-                            <a  class="dropdown-item" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                             Logout
+
+                            <a class="dropdown-item" asp-area="" asp-controller="Times" asp-action="Logout" style="color:black;text-decoration: none;">
+                              Logout
                             </a>
                     
                   

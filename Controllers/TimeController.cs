@@ -19,11 +19,13 @@ namespace FinalProject.Controllers
     {
         private readonly FinalProjectDbContext _context;
         private readonly UserManager<FinalProjectUser> _userManager;
+        private readonly SignInManager<FinalProjectUser> _signInManager;
 
-        public TimesController(FinalProjectDbContext context, UserManager<FinalProjectUser> userManager)
+        public TimesController(FinalProjectDbContext context, UserManager<FinalProjectUser> userManager, SignInManager<FinalProjectUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [TempData]
@@ -50,13 +52,23 @@ namespace FinalProject.Controllers
             var finalprojectDbContext = _context.TimeModel.Include(t => t.FinalProjectUser);
             return View(await finalprojectDbContext.ToListAsync());
         }
+       
+        
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
 
+            await _signInManager.SignOutAsync();
+
+          
+            return RedirectToAction("Index", "Home");
+        }
 
 
         [HttpGet]
         [Authorize]
 
-        // GET: Times/Create
+        
         public IActionResult Create()
         {
             string userId = _userManager.GetUserId(User);
