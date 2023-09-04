@@ -36,62 +36,102 @@
         border: 1px solid #ccc;
         border-radius: 3px;
     }
+    
+     .align-right{
+        text-align: right;
+        
+    }
+
+    .custom-file-upload {
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+        .custom-file-upload input[type="file"] {
+            display: none;
+        }
+
+    
+
 </style>
 
-<div class="containers" >
+
+
+
+
+<div class="containers">
     @foreach (var user in Model)
     {
-        <div class="profile-photo-container">
+        <div class="profile-photo-container col-sm-12  col-md-12">
             @if (@user.Photo != null)
             {
                 <img src="data:image/*;base64,@(Convert.ToBase64String(user.Photo))" style="width: 200px; height: 200px; object-fit: cover; border-radius: 200px" alt="Profile Photo" class="profile-photo" />
             }
+            <form asp-action="PostPhoto" asp-controller="Times" method="post" enctype="multipart/form-data">
+               
+                <div class="form-group">
+                    <label for="photo" class="custom-file-upload">
+                        <input type="file" id="photo" name="photo" />
+                        Choose file
+                    </label>
+
+                    <button type="submit" class="btn btn-link">Upload</button>
+                </div>
+                
+                
+            </form>
         </div>
+
         <br />
-        <form asp-action="UpdateProfile" asp-controller="Times" method="post" >
+        <form asp-action="UpdateProfile" asp-controller="Times" method="post">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="info-group">
+                        <span class="info-label">FirstName:</span>
+                        <input type="text" class="form-control" id="FirstName" name="FirstName" value="@user.FirstName" />
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="info-group">
+                        <span class="info-label">LastName:</span>
+                        <input type="text" class="form-control" id="LastName" name="LastName" value="@user.LastName" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="info-group col-sm-12 col-lg-12 col-md-12">
+                    <span class="info-label">Phone Number:</span>
+                    <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@user.PhoneNumber" />
+                </div>
 
-            <div class="info-group">
-                <span class="info-label">Name:</span>
-                <input type="text" class="form-control" id="FirstName" name="FirstName" value="@user.FirstName" />
-                <input type="text" class="form-control" id="LastName" name="LastName" value="@user.LastName" />
+                <div class="info-group col-sm-12 col-lg-12 col-md-12">
+                    <span class="info-label">Date of Birth:</span>
+                    @if (user.DOB != null)
+                    {
+                        <input type="text" class="form-control" id="DOB" name="DOB" value="@user.DOB.Value.ToString("yyyy-MMM-dd" )" />
+                    }
+                    else
+                    {
+                        <input type="text" class="form-control" id="DOB" name="DOB" />
+                    }
+
+
+                </div>
+
+
+                <div class="info-group col-sm-12 col-lg-12 col-md-12">
+                    <span class="info-label">Email:</span>
+                    <input type="text" class="form-control" id="Email" name="Email" value="@user.Email" />
+                </div>
             </div>
 
-            <div class="info-group">
-                <span class="info-label">Phone Number:</span>
-                <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@user.PhoneNumber" />
-            </div>
-
-            <div class="info-group">
-                <span class="info-label">Date of Birth:</span>
-                @if (user.DOB != null)
-                {
-                    <input type="text" class="form-control" id="DOB" name="DOB" value="@user.DOB.Value.ToString("yyyy-MMM-dd" )" />
-                }
-                else
-                {
-                    <input type="text" class="form-control" id="DOB" name="DOB"  />
-                }
-                
-                
-            </div>
-
-            <div class="info-group">
-                <span class="info-label">Email:</span>
-                <input type="text" class="form-control" id="Email" name="Email" value="@user.Email" />
-            </div>
-
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-link">Update</button>
         </form>
     }
 
-    <form asp-action="PostPhoto" asp-controller="Times" method="post" enctype="multipart/form-data">
-        @foreach (var user in Model)
-        {
-            <input type="hidden" name="userId" value="@user.Id" />
-        }
-        <div class="form-group">
-            <input type="file" class="form-control-file" id="photo" name="photo">
-        </div>
-        <button type="submit" class="btn btn-primary">Upload</button>
-    </form>
+   
 </div>

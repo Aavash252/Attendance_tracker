@@ -13,7 +13,7 @@
 </center>
 <br />
 <br />
-<body style="background-color:white;">
+
 
     
     <style>
@@ -21,10 +21,11 @@
 
 
         .containers {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
+           
+            justify-content: center;
+            margin: 0px 0px 20px 20px
           
+           
           
         }
 
@@ -33,7 +34,7 @@
             height: 200px;
             background-color:white;
             transition: transform 0.3s, width 0.3s, height 0.3s, margin 0.3s;
-            margin: 20px;
+            margin: 20px 20px 20px 20px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -56,45 +57,92 @@
        .box a {
                 text-decoration: none; 
        }
-
+       
 
 
     </style>
-    @if (User.Identity.IsAuthenticated)
-    {
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-sm-12">
-                    <a asp-area="" asp-controller="Times" asp-action="Create" class="box" style="color:black;text-decoration: none;">
-                        <div>
-                            <img src="~/css/board.png" width="200" height="200" class="img-fluid" />
-                            <h2>Go to Clock</h2>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-sm-12">
-                    <a href="@Url.Action("Graph", "Times", new { userId = ViewBag.CurrentUserId })" class="box" style="color:black;text-decoration: none;">
-                        <div>
-                            <img src="~/css/analytics.png" width="200" height="200" class="img-fluid" />
-                            <h2 style="color:black;">View Analytics</h2>
-                        </div>
-                    </a>
-                </div>
-                
 
-                @if (User.IsInRole("Admin"))
-                {
-                    <div class="col-lg-3 col-sm-12">
-                        <a asp-area="" asp-controller="User" asp-action="Index" class="box" style="color:black;text-decoration: none;">
-                            <div>
-                                <img src="~/css/admin.png" width="200" height="200" class="img-fluid" />
-                                <h2>Admin</h2>
-                            </div>
-                        </a>
+
+<body style="background-color:white;">
+
+    @if (User.Identity.IsAuthenticated )
+    {
+        if (User.IsInRole("Admin"))
+        {
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card" style="border:none">
+                        <div class="card-body">
+                            <a asp-area="" asp-controller="Times" asp-action="Create" class="box" style="color:black;text-decoration: none;">
+                                <div>
+                                    <img src="~/css/board.png" width="200" height="200" class="img-fluid" />
+                                    <h2>Go to Clock</h2>
+                                </div>
+                            </a>
+                        </div>
                     </div>
-                }
+                </div>
+                <div class="col-sm-4">
+                    <div class="card" style="border:none">
+                        <div class="card-body">
+                            <a href="@Url.Action("Graph", "Times", new { userId = ViewBag.CurrentUserId })" class="box" style="color:black;text-decoration: none;">
+                                <div>
+                                    <img src="~/css/analytics.png" width="200" height="200" class="img-fluid" />
+                                    <h2 style="color:black;">View Analytics</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card" style="border:none">
+                        <div class="card-body">
+                            <a asp-area="" asp-controller="User" asp-action="Index" class="box" style="color:black;text-decoration: none;">
+                                <div>
+                                    <img src="~/css/admin.png" width="200" height="200" class="img-fluid" />
+                                    <h2>Admin</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-       
+        }
+
+        else
+        {
+            <div class="row">
+                <div class="col-sm-6 ">
+                    <div class="card" style="border:none">
+                        <div class="card-body">
+                            <a asp-area="" asp-controller="Times" asp-action="Create" class="box" style="color:black;text-decoration: none;">
+                                <div>
+                                    <img src="~/css/board.png" width="200" height="200" class="img-fluid" />
+                                    <h2>Go to Clock</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card" style="border:none">
+                        <div class="card-body" >
+                            <a href="@Url.Action("Graph", "Times", new { userId = ViewBag.CurrentUserId })" class="box" style="color:black;text-decoration: none;">
+                                <div>
+                                    <img src="~/css/analytics.png" width="200" height="200" class="img-fluid" />
+                                    <h2 style="color:black;">View Analytics</h2>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        }
     }
+    
+        
+  
 </body>

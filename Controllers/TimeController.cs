@@ -52,15 +52,15 @@ namespace FinalProject.Controllers
             var finalprojectDbContext = _context.TimeModel.Include(t => t.FinalProjectUser);
             return View(await finalprojectDbContext.ToListAsync());
         }
-       
-        
+
+
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
 
             await _signInManager.SignOutAsync();
 
-          
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -68,7 +68,7 @@ namespace FinalProject.Controllers
         [HttpGet]
         [Authorize]
 
-        
+
         public IActionResult Create()
         {
             string userId = _userManager.GetUserId(User);
@@ -81,37 +81,37 @@ namespace FinalProject.Controllers
             TimeTable time = new TimeTable
             {
                 UserId = userId,
-               
+
             };
 
             return View(time);
-            
+
 
 
         }
 
-        
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,Date, Clock_In, Clock_Out")] TimeTable time)
         {
 
-            time.Date= DateTime.Now;
+            time.Date = DateTime.Now;
 
             _context.Add(time);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-            
+
         }
-           
 
-            
 
-            
+
+
+
 
         [Authorize(Roles = "Admin")]
-        public ActionResult Dashboard(int page = 1, int pageSize =9)
+        public ActionResult Dashboard(int page = 1, int pageSize = 9)
         {
             var totalCount = _context.TimeModel.Count();
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
@@ -238,7 +238,7 @@ namespace FinalProject.Controllers
                 return NotFound();
             }
 
-            
+
             return View(user);
 
         }
@@ -251,7 +251,7 @@ namespace FinalProject.Controllers
                 string userId = _userManager.GetUserId(User);
 
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-               
+
                 if (user != null)
                 {
                     user.FirstName = updatedUser.FirstName;
@@ -262,7 +262,7 @@ namespace FinalProject.Controllers
                     await _context.SaveChangesAsync();
                 }
             }
-            
+
 
 
             return RedirectToAction(nameof(Profile));

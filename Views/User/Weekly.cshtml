@@ -10,15 +10,13 @@
     var totalHours = ViewBag.TotalHours as List<double>;
 }
 
-<!DOCTYPE html>
-<html>
-<head>
+
     <title>Work Hours Graph</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+
 <body>
     <h1>Work Hours for the Last 7 Days</h1>
-    <canvas id="workHoursChart"></canvas>
+    <canvas id="workHoursChart" width="700" height="300"></canvas>
 
     <script>
 
@@ -45,4 +43,3 @@
         });
     </script>
 </body>
-</html>
