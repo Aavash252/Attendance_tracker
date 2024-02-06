@@ -26,6 +26,7 @@
     </style>
 <table>
     <tr>
+        <th>  </th>
         <th>Name</th>
         <th>Email</th>
         <th>Info</th>
@@ -34,11 +35,24 @@
     @foreach (var user in Model)
     {
         <tr>
+                <td>
+                    @if (@user.Photo != null)
+                    {
+                        <img src="data:image/*;base64,@(Convert.ToBase64String(user.Photo))" style="width: 70px; height: 77px; object-fit: cover; border-radius: 30px" alt="Profile Photo" class="profile-photo" />
+                    }
+                    else
+                    {
+
+                        <img src="~/css/user.png" style="width: 70px; height: 77px; object-fit: cover; border-radius: 30px" alt="Default Photo" class="profile-photo" />
+                    }
+                </td>
+
             <td>
                 <a href="@Url.Action("Graph", "User", new { userId = user.Id })">@user.FirstName</a>
             </td>
             <td>@user.Email</td>
-                <td><a href="@Url.Action("Info", "User", new { userId = user.Id })">Info</a></td>
+            <td><a href="@Url.Action("Info", "User", new { userId = user.Id })">Info</a></td>
+           
         </tr>
     }
     
